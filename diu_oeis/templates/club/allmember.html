@@ -1,0 +1,144 @@
+{% extends "club/base.html" %}
+
+{% block content %}
+<style media="screen">
+  .error {
+    color: red;
+  }
+
+  .success {
+    color: green;
+  }
+
+  .vertical_center {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  /* Styles for PDF */
+  @media print {
+    table {
+      width: 80%;
+      border-collapse: collapse;
+      margin: 20px auto;
+    }
+
+    th,
+    td {
+      padding: 8px;
+      border: 1px solid #ddd;
+      text-align: left;
+      font-weight: bold;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .pdf-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .pdf-date {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .pdf-logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .pdf-logo img {
+      max-width: 100px;
+      max-height: 100px;
+    }
+  }
+</style>
+<section>
+  <div class="row pt-md-5 mt-md-3 mb-5 ml-3 ">
+    {% if messages %}
+    <ul class="messages col-md-6 offset-3">
+      {% for message in messages %}
+      <li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">ID</th>
+          <th scope="col">Semester</th>
+          <th scope="col">Credit</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for member in members %}
+        <tr scope="row">
+          <td>{{ forloop.counter }}</td>
+          <td>{{ member.name }}</td>
+          <td>{{ member.std_id }}</td>
+          <td>{{ member.semister }}</td>
+          <td>{{ member.completed_credit }}</td>
+          <td>{{ member.email }}</td>
+          <td>{{ member.phone_number }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <button class="btn btn-success" id="printButton">Print</button>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block js_script %}
+<script type="text/javascript">
+document.getElementById("printButton").addEventListener("click", function () {
+  const clubTitle = "{{ club.shortname }}";
+  const clubLogo = "{{ MEDIA_URL }}{{ club.logo.url }}";
+  const table = document.querySelector("table");
+  const dateTime = new Date().toLocaleString();
+
+  const printWindow = window.open("", "", "width=800,height=600");
+  printWindow.document.write('<html><head><title>Club Members</title>');
+  printWindow.document.write('<style>');
+  printWindow.document.write('table { width: 90%; border-collapse: collapse; margin: 20px auto; }');
+  printWindow.document.write('th, td { padding: 8px; border: 1px solid #ddd; text-align: left; font-weight: bold; font-size: 12px; }'); // Adjusted font size to 12px
+  printWindow.document.write('th { background-color: #f2f2f2; }');
+  printWindow.document.write('.pdf-header { text-align: center; margin-bottom: 20px; }');
+  printWindow.document.write('.pdf-date { font-size: 16px; font-weight: bold; margin-bottom: 10px; }');
+  printWindow.document.write('.pdf-logo { text-align: center; margin-bottom: 20px; }');
+  printWindow.document.write('.pdf-logo img { max-width: 100px; max-height: 100px; }');
+  printWindow.document.write('</style>');
+  printWindow.document.write('</head><body>');
+  printWindow.document.write('<div class="pdf-header">');
+  printWindow.document.write('<div class="pdf-logo">');
+  printWindow.document.write('<img src="' + clubLogo + '" alt="Club Logo">');
+  printWindow.document.write('</div>');
+  printWindow.document.write('<h2>' + clubTitle + ' - Members</h2>');
+  printWindow.document.write('<div class="pdf-date">' + dateTime + '</div>');
+  printWindow.document.write('</div>');
+
+  printWindow.document.write(table.outerHTML);
+  printWindow.document.write('</body></html>');
+  printWindow.document.close();
+  
+  printWindow.onafterprint = function() {
+    printWindow.close(); // Close the print window after printing
+  };
+
+  printWindow.print();
+});
+
+
+</script>
+{% endblock %}

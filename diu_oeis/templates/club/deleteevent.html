@@ -1,0 +1,26 @@
+{% extends "club/base.html" %}
+{% load static %}
+{% block content %}
+
+<br>
+<br>
+
+  <div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+    <h1>Confirm Event Deletion</h1>
+    <p>Are you sure you want to delete the event "{{ event.eventname }}"?</p>
+    <form method="post" action="{% url 'deleteevent' event.id %}">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger">Delete</button>
+      <a href="{% url 'eventsingle' event.eventname %}" class="btn btn-secondary">Cancel</a>
+    </form>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block js_script %}
+
+{% endblock %}
+

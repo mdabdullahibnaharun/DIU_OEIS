@@ -1,0 +1,26 @@
+
+1. Make sure you have activated your virtual environment. In your project's root directory, run the following command:
+   ```
+   .venv\Scripts\activate
+   ```
+
+2. Check if Django is installed in your virtual environment. Run the following command to verify:
+   ```
+   pip list
+   ```
+
+   Look for Django in the list of installed packages. If it is not present, you can install it by running:
+   ```
+   pip install django
+   ```
+
+3. Once Django is installed, try running your Django project again:
+   ```
+   python manage.py makemigrations
+   python manage.py migrate
+   python manage.py runserver
+   ```
+
+   This should start the Django development server and your project should run without the "No module named 'django'" error.
+
+By following these steps, you should be able to resolve the issue and run your Django project in VS Code with the necessary dependencies installed.
