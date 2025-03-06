@@ -2,11 +2,7 @@
 
 ![image](https://github.com/user-attachments/assets/491f9b89-365f-4abe-afdc-970602e33518)
 
-
 ---
-
-#  Project Documentation
-
 This repository contains the **DIUOEIS** (Daffodil International University Online Event and Information System) project. The platform is designed to enhance student engagement at Daffodil International University by offering a centralized platform to manage clubs, events, news, notices, and more.
 
 ## Table of Contents
